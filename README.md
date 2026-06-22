@@ -1,58 +1,223 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+#  Espace de Gestion
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Ce guide vous explique comment récupérer, installer et lancer le projet localement.
 
-## About Laravel
+##  Prérequis
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Avant de commencer, assurez-vous d'avoir installé :
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- PHP (version recommandée : **8.2+**)
+- Composer
+- Node.js & NPM
+- MySQL ou MariaDB
+- Mailpit (pour les tests d'e-mails en local)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+##  Récupération et Installation
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Exécutez les commandes suivantes pas à pas dans votre terminal.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### 1. Cloner le projet
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/Henock-Lite/espace-de-gestion.git
+cd espace-de-gestion
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 2. Installer les dépendances PHP (Laravel)
 
-## Contributing
+```bash
+composer install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 3. Installer les dépendances Frontend (Tailwind CSS v4, DaisyUI, Alpine.js)
 
-## Code of Conduct
+```bash
+npm install
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 4. Configurer l'environnement
 
-## Security Vulnerabilities
+Copiez le fichier d'exemple pour créer votre fichier `.env` :
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+cp .env.example .env
+```
 
-## License
+Sous Windows :
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```cmd
+copy .env.example .env
+```
+
+Ouvrez ensuite le fichier `.env` et configurez vos accès à la base de données ainsi que Mailpit :
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=votre_base_de_donnees
+DB_USERNAME=votre_utilisateur
+DB_PASSWORD=votre_mot_de_passe
+
+MAIL_MAILER=smtp
+MAIL_HOST=127.0.0.1
+MAIL_PORT=1025
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS="noreply@example.com"
+MAIL_FROM_NAME="${APP_NAME}"
+```
+
+### 5. Initialiser l'application
+
+Générez la clé de sécurité :
+
+```bash
+php artisan key:generate
+```
+
+Exécutez les migrations :
+
+```bash
+php artisan migrate
+```
+
+Si le projet contient des seeders :
+
+```bash
+php artisan db:seed
+```
+
+Ou directement :
+
+```bash
+php artisan migrate --seed
+```
+
+### 6. Créer le lien de stockage
+
+```bash
+php artisan storage:link
+```
+
+---
+
+##  Lancement de Mailpit (Local)
+
+Lancez votre instance Mailpit :
+
+### Avec Docker
+
+```bash
+docker run -d --name mailpit -p 1025:1025 -p 8025:8025 axllent/mailpit
+```
+
+Interface web :
+
+```text
+http://localhost:8025
+```
+
+Tous les e-mails envoyés par l'application seront visibles dans cette interface.
+
+---
+
+##  Lancement de l'Application
+
+Ouvrez deux terminaux distincts.
+
+### Terminal 1 — Backend Laravel
+
+```bash
+php artisan serve
+```
+
+Application accessible sur :
+
+```text
+http://127.0.0.1:8000
+```
+
+### Terminal 2 — Frontend Vite
+
+```bash
+npm run dev
+```
+
+---
+
+##  Technologies utilisées
+
+### Backend
+
+- Laravel (dernière version stable)
+- PHP
+- MySQL
+
+### Frontend
+
+- Tailwind CSS v4
+- DaisyUI
+- Alpine.js
+- Vite
+
+### Outils
+
+- Composer
+- NPM
+- Mailpit
+
+---
+
+##  Commandes utiles
+
+### Vider les caches Laravel
+
+```bash
+php artisan optimize:clear
+```
+
+### Vérifier les routes
+
+```bash
+php artisan route:list
+```
+
+### Vérifier les migrations
+
+```bash
+php artisan migrate:status
+```
+
+### Recréer complètement la base de données
+
+ Cette commande supprime toutes les données existantes.
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+### Compiler les assets pour la production
+
+```bash
+npm run build
+```
+
+---
+
+## Développement
+
+Pour lancer simultanément Laravel, Vite et les autres services de développement :
+
+```bash
+composer run dev
+```
+
+---
+
+##  Licence
+
+Projet réalisé dans le cadre d'un apprentissage et d'exercices de développement avec Laravel.
