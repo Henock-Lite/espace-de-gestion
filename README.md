@@ -85,7 +85,7 @@ Exécutez les migrations :
 php artisan migrate
 ```
 
-Si le projet contient des seeders :
+le projet contient des seeders :
 
 ```bash
 php artisan db:seed
