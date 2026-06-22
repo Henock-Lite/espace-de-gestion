@@ -1,0 +1,102 @@
+/* --- Styles Communs (Input & Textarea) --- */
+.input, 
+.textarea {
+    width: 100%;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    
+    /* ESPACEMENT GÉNÉREUX : 12px en haut/bas (3) et 16px à gauche/droite (4) */
+    padding: calc(var(--spacing) * 3) calc(var(--spacing) * 4);
+    
+    background-color: var(--color-card);
+    color: var(--color-foreground);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    transition: box-shadow 0.2s ease;
+}
+
+.input {
+    /* HAUTEUR PARFAITE : l'input fait 48px de haut, le texte ne touche plus les bords */
+    height: calc(var(--spacing) * 12);
+}
+
+.textarea {
+    height: calc(var(--spacing) * 40);
+    resize: vertical;
+}
+
+/* --- Placeholders --- */
+.input::placeholder,
+.textarea::placeholder {
+    color: var(--color-muted-foreground);
+}
+
+/* --- Focus State --- */
+.input:focus-visible,
+.textarea:focus-visible {
+    outline: 0;
+    box-shadow:
+        0 0 0 calc(var(--spacing) * 0.5) var(--color-background), 
+        0 0 0 calc(var(--spacing) * 1) var(--color-primary);
+}
+
+/* --- Labels --- */
+label, 
+.label {
+    display: block;
+    color: var(--color-foreground);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    
+    /* CORRIGÉ & CALIBRÉ : un espace propre de 8px pour lier visuellement le label à son input */
+    margin-bottom: calc(var(--spacing) * 2);
+}
+
+/* --- Media Query --- */
+@media (min-width: 768px) { 
+    .input, .textarea {
+        font-size: var(--text-sm);
+    }
+}
+
+/* --- File Input --- */
+input[type=file] {
+    display: block;
+    width: 100%;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: var(--color-foreground);
+}
+
+input[type=file]::file-selector-button {
+    margin-right: calc(var(--spacing) * 4);
+    padding: calc(var(--spacing) * 2) calc(var(--spacing) * 4);
+    border-radius: calc(var(--spacing) * 2);
+    border-width: 0;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+    background-color: var(--color-primary);
+    color: var(--color-background); 
+    cursor: pointer;
+}
+
+input[type=file]::file-selector-button:hover {
+    opacity: 0.9;
+}
+
+/* --- Utilitaires --- */
+.error {
+    font-size: var(--text-sm);
+    color: var(--color-red-600);
+    margin-top: calc(var(--spacing) * 1);
+}
+
+.form-muted-icon {
+    color: var(--color-muted-foreground);
+    transition: color 0.2s;
+}
+
+.form-muted-icon:hover {
+    color: var(--color-foreground);
+}
