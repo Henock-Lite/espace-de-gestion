@@ -1,11 +1,7 @@
 <?php
 
-// use Illuminate\Http\Request;
-// use Illuminate\Support\Facades\Mail;
-// use Illuminate\Support\Facades\Password;
-// use Illuminate\Support\Facades\Hash;
+
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SessionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\ClientController;
@@ -18,6 +14,7 @@ use App\Http\Controllers\VenteController;
 use App\Http\Controllers\SuperAdminDashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\SessionController;
 
 // Auth
 Route::get('/login', [SessionController::class, 'create'])->name('login');
