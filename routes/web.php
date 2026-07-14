@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Facades\Hash;
+// use Illuminate\Http\Request;
+// use Illuminate\Support\Facades\Mail;
+// use Illuminate\Support\Facades\Password;
+// use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\DashboardController;
@@ -17,14 +17,15 @@ use App\Http\Controllers\ApprovisionnementController;
 use App\Http\Controllers\VenteController;
 use App\Http\Controllers\SuperAdminDashboardController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 
 // Auth
 Route::get('/login', [SessionController::class, 'create'])->name('login');
 Route::post('/login', [SessionController::class, 'store'])->name('login.store');
 Route::post('/logout', [SessionController::class, 'destroy'])->name('logout');
 
-// Admin
-Route::middleware(['auth', 'admin'])->group(function () {
+// Admin (Protection Auth, Rôle Admin ET interdiction du bouton Retour)
+Route::middleware(['auth', 'admin', 'prevent-back'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('categories', CategorieController::class);
@@ -37,8 +38,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('mouvements', MouvementStockController::class)->only(['index', 'show']);
 });
 
-// Super Admin
-Route::middleware(['auth', 'superadmin'])->group(function () {
+// Super Admin (Protection Auth, Rôle SuperAdmin ET interdiction du bouton Retour)
+Route::middleware(['auth', 'superadmin', 'prevent-back'])->group(function () {
     Route::get('/super', [SuperAdminDashboardController::class, 'index'])->name('super.dashboard');
     Route::resource('users', UserController::class);
 });
@@ -57,42 +58,8 @@ Route::fallback(function () {
     };
 });
 
-
-
-Route::get('/forgot-password', function () {
-    return view('auth.forgot-password');
-})->name('password.request');
-
-Route::post('/forgot-password', function (Request $request) {
-    $request->validate(['email' => 'required|email']);
-
-    $status = Password::sendResetLink($request->only('email'));
-
-    return $status === Password::ResetLinkSent
-        ? back()->with('success', 'Lien de réinitialisation envoyé.')
-        : back()->withErrors(['email' => __($status)]);
-})->name('password.email');
-
-Route::get('/reset-password/{token}', function (string $token) {
-    return view('auth.reset-password', ['token' => $token]);
-})->name('password.reset');
-
-Route::post('/reset-password', function (Request $request) {
-    $request->validate([
-        'token'    => 'required',
-        'email'    => 'required|email',
-        'password' => 'required|min:8|confirmed',
-    ]);
-
-    $status = Password::reset(
-        $request->only('email', 'password', 'password_confirmation', 'token'),
-        function ($user, $password) {
-            $user->update(['password' => Hash::make($password)]);
-        }
-    );
-
-    return $status === Password::PasswordReset
-        ? redirect()->route('login')->with('success', 'Mot de passe réinitialisé.')
-        : back()->withErrors(['email' => __($status)]);
-})->name('password.update');
-
+// Réinitialisation de mot de passe via le ForgotPasswordController
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('/reset-password', [ForgotPasswordController::class, 'reset'])->name('password.update');
