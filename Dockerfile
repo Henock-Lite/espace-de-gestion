@@ -32,4 +32,5 @@ ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
 EXPOSE 80
 
-CMD ["apache2-foreground"]
+# Force la reconstruction de la carte des classes au démarrage du conteneur, puis lance Apache
+CMD composer dump-autoload --optimize && apache2-foreground
