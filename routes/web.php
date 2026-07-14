@@ -67,28 +67,6 @@ Route::post('/reset-password', [ForgotPasswordController::class, 'reset'])->name
 
 
 
-// Route temporaire pour lancer les migrations en production
-Route::get('/run-migrations', function () {
-    try {
-        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Migrations exécutées avec succès !',
-            'output' => \Illuminate\Support\Facades\Artisan::output()
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Erreur lors des migrations',
-            'error' => $e->getMessage()
-        ], 500);
-    }
-});
-
-
-
-
-
 Route::get('/healthz', function () {
     return response()->json([
         'status' => 'ok'
