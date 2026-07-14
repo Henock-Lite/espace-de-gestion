@@ -21,14 +21,14 @@ RUN composer install --no-dev --optimize-autoloader
 
 RUN npm install && npm run build
 
-# Configurer Apache pour Laravel
-RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
-
-RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
-
-RUN php artisan storage:link || true
+RUN php artisan storage:link
 
 RUN chown -R www-data:www-data storage bootstrap/cache
+
+# Important pour Laravel
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
 EXPOSE 80
 
