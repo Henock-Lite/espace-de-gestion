@@ -63,7 +63,25 @@ Route::post('/reset-password', [ForgotPasswordController::class, 'reset'])->name
 
 
 
-
+// Route temporaire pour insérer les utilisateurs (Seeder)
+Route::get('/run-seeder', function () {
+    try {
+        // Cette commande exécute le DatabaseSeeder principal
+        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Seeder exécuté avec succès ! Les utilisateurs ont été créés.',
+            'output' => \Illuminate\Support\Facades\Artisan::output()
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Erreur lors de l\'exécution du Seeder',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+});
 
 
 
