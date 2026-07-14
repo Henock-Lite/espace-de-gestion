@@ -16,6 +16,33 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\SessionController;
 
+
+
+
+
+
+
+
+Route::get('/run-seeder', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Seeder exécuté avec succès !',
+            'output' => \Illuminate\Support\Facades\Artisan::output()
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Erreur lors du Seeder',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+});
+
+
+
+
 // Auth
 Route::get('/login', [SessionController::class, 'create'])->name('login');
 Route::post('/login', [SessionController::class, 'store'])->name('login.store');
@@ -63,25 +90,7 @@ Route::post('/reset-password', [ForgotPasswordController::class, 'reset'])->name
 
 
 
-// Route temporaire pour insérer les utilisateurs (Seeder)
-Route::get('/run-seeder', function () {
-    try {
-        // Cette commande exécute le DatabaseSeeder principal
-        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
-        
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Seeder exécuté avec succès ! Les utilisateurs ont été créés.',
-            'output' => \Illuminate\Support\Facades\Artisan::output()
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Erreur lors de l\'exécution du Seeder',
-            'error' => $e->getMessage()
-        ], 500);
-    }
-});
+
 
 
 
