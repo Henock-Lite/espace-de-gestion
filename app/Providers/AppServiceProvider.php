@@ -1,12 +1,9 @@
 <?php
 
 namespace App\Providers;
-// Ces deux lignes ci-dessous sont cruciales :
-use App\Services\VenteService;
-use App\Services\ApprovisionnementService;
+
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
-
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -14,15 +11,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // On force Laravel à lier le service VenteService
-        $this->app->singleton(VenteService::class, function ($app) {
-            return new VenteService();
-        });
-
-        // On force Laravel à lier le service ApprovisionnementService
-        $this->app->singleton(ApprovisionnementService::class, function ($app) {
-            return new ApprovisionnementService();
-        });
+        //
     }
 
     /**
