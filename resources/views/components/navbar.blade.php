@@ -6,8 +6,8 @@
 
     <div class="flex items-center gap-4">
 
-        @if(auth()->user()->role === 'super_admin')
-            @if(request()->routeIs('super.*'))
+        @if (auth()->user()->role === 'super_admin')
+            @if (request()->routeIs('super.*') || request()->routeIs('users.*'))
                 <a href="{{ route('dashboard') }}"
                     class="text-sm px-3 py-1 bg-card border border-border rounded hover:bg-border transition">
                     Basculer vers Admin
