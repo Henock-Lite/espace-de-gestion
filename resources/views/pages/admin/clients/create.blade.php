@@ -1,18 +1,18 @@
 <x-layout.admin title="Nouveau client">
 
     <div class="flex items-center gap-3 mb-6">
-        <a href="{{ route('clients.index') }}" class="text-muted-foreground hover:text-foreground transition">
+        <a href="{{ route('clients.index') }}" class="text-muted-foreground hover:text-foreground transition text-sm">
             ← Retour
         </a>
-        <h1 class="text-2xl font-bold">Nouveau client</h1>
+        <h1 class="text-xl md:text-2xl font-bold">Nouveau client</h1>
     </div>
 
-    <div class="bg-card border border-border rounded-lg p-6 max-w-xl mx-auto">
+    <div class="bg-card border border-border rounded-lg p-4 md:p-6 max-w-xl mx-auto">
 
         <form method="POST" action="{{ route('clients.store') }}">
             @csrf
 
-            <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <div>
                     <label for="nom">Nom</label>
                     <input type="text" id="nom" name="nom"
@@ -30,7 +30,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <div>
                     <label for="telephone">Téléphone</label>
                     <input type="text" id="telephone" name="telephone"
@@ -57,7 +57,7 @@
                     placeholder="Adresse complète">
             </div>
 
-            <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <div>
                     <label for="ville">Ville</label>
                     <input type="text" id="ville" name="ville"
@@ -73,9 +73,9 @@
                 </div>
             </div>
 
-            <div class="flex gap-3 mt-6">
-                <button type="submit" class="btn">Créer le client</button>
-                <a href="{{ route('clients.index') }}" class="btn btn-outlined">Annuler</a>
+            <div class="flex flex-col sm:flex-row gap-3 mt-6">
+                <button type="submit" class="btn w-full sm:w-auto">Créer le client</button>
+                <a href="{{ route('clients.index') }}" class="btn btn-outlined w-full sm:w-auto text-center">Annuler</a>
             </div>
 
         </form>

@@ -1,13 +1,13 @@
 <x-layout.admin title="Nouveau produit">
 
     <div class="flex items-center gap-3 mb-6">
-        <a href="{{ route('produits.index') }}" class="text-muted-foreground hover:text-foreground transition">
+        <a href="{{ route('produits.index') }}" class="text-muted-foreground hover:text-foreground transition text-sm">
             ← Retour
         </a>
-        <h1 class="text-2xl font-bold">Nouveau produit</h1>
+        <h1 class="text-xl md:text-2xl font-bold">Nouveau produit</h1>
     </div>
 
-    <div class="bg-card border border-border rounded-lg p-6 max-w-xl mx-auto">
+    <div class="bg-card border border-border rounded-lg p-4 md:p-6 max-w-xl mx-auto">
 
         <form method="POST" action="{{ route('produits.store') }}">
             @csrf
@@ -61,9 +61,9 @@
                 @error('description') <p class="error">{{ $message }}</p> @enderror
             </div>
 
-            <div class="flex gap-3">
-                <button type="submit" class="btn">Créer le produit</button>
-                <a href="{{ route('produits.index') }}" class="btn btn-outlined">Annuler</a>
+            <div class="flex flex-col sm:flex-row gap-3">
+                <button type="submit" class="btn w-full sm:w-auto">Créer le produit</button>
+                <a href="{{ route('produits.index') }}" class="btn btn-outlined w-full sm:w-auto text-center">Annuler</a>
             </div>
 
         </form>

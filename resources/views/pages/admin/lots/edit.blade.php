@@ -1,13 +1,13 @@
 <x-layout.admin title="Modifier lot">
 
     <div class="flex items-center gap-3 mb-6">
-        <a href="{{ route('lots.index') }}" class="text-muted-foreground hover:text-foreground transition">
+        <a href="{{ route('lots.index') }}" class="text-muted-foreground hover:text-foreground transition text-sm">
             ← Retour
         </a>
-        <h1 class="text-2xl font-bold">Modifier lot — {{ $lot->numero_lot }}</h1>
+        <h1 class="text-xl md:text-2xl font-bold">Modifier lot — {{ $lot->numero_lot }}</h1>
     </div>
 
-    <div class="bg-card border border-border rounded-lg p-6 max-w-xl mx-auto">
+    <div class="bg-card border border-border rounded-lg p-4 md:p-6 max-w-xl mx-auto">
 
         <form method="POST" action="{{ route('lots.update', $lot->id) }}">
             @csrf
@@ -26,7 +26,7 @@
                 @error('numero_lot') <p class="error">{{ $message }}</p> @enderror
             </div>
 
-            <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <div>
                     <label for="date_fabrication">Date fabrication</label>
                     <input type="date" id="date_fabrication" name="date_fabrication"
@@ -42,7 +42,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <div>
                     <label for="quantite_restante">Quantité restante</label>
                     <input type="number" id="quantite_restante" name="quantite_restante"
@@ -79,9 +79,9 @@
                 </div>
             </div>
 
-            <div class="flex gap-3">
-                <button type="submit" class="btn">Enregistrer</button>
-                <a href="{{ route('lots.index') }}" class="btn btn-outlined">Annuler</a>
+            <div class="flex flex-col sm:flex-row gap-3">
+                <button type="submit" class="btn w-full sm:w-auto">Enregistrer</button>
+                <a href="{{ route('lots.index') }}" class="btn btn-outlined w-full sm:w-auto text-center">Annuler</a>
             </div>
 
         </form>

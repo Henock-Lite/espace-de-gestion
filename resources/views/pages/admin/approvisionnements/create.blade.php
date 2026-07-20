@@ -1,10 +1,10 @@
 <x-layout.admin title="Nouvel approvisionnement">
 
     <div class="flex items-center gap-3 mb-6">
-        <a href="{{ route('approvisionnements.index') }}" class="text-muted-foreground hover:text-foreground transition">
+        <a href="{{ route('approvisionnements.index') }}" class="text-muted-foreground hover:text-foreground transition text-sm">
             ← Retour
         </a>
-        <h1 class="text-2xl font-bold">Nouvel approvisionnement</h1>
+        <h1 class="text-xl md:text-2xl font-bold">Nouvel approvisionnement</h1>
     </div>
 
     @if($errors->has('error'))
@@ -49,7 +49,7 @@
             {{-- TOTAL --}}
             <div class="bg-card border border-border rounded-lg p-4 flex flex-col justify-between">
                 <h2 class="font-semibold mb-2">Total</h2>
-                <p class="text-3xl font-bold text-primary" x-text="total + ' DA'"></p>
+                <p class="text-2xl md:text-3xl font-bold text-primary" x-text="total + ' DA'"></p>
             </div>
 
         </div>
@@ -63,7 +63,7 @@
                 </button>
             </div>
 
-            <div class="space-y-6">
+            <div class="space-y-4">
                 <template x-for="(ligne, index) in lignes" :key="index">
                     <div class="border border-border rounded-lg p-4 relative">
 
@@ -74,8 +74,8 @@
                             ✕
                         </button>
 
-                        <div class="grid grid-cols-2 gap-3 mb-3">
-
+                        {{-- Produit + N° Lot --}}
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
                             <div>
                                 <label class="text-xs text-muted-foreground mb-1 block">Produit</label>
                                 <select :name="'lignes[' + index + '][produit_id]'"
@@ -87,7 +87,6 @@
                                     @endforeach
                                 </select>
                             </div>
-
                             <div>
                                 <label class="text-xs text-muted-foreground mb-1 block">N° Lot</label>
                                 <input type="text"
@@ -96,11 +95,10 @@
                                     class="input text-sm"
                                     placeholder="Ex: LOT-2024-001">
                             </div>
-
                         </div>
 
+                        {{-- Quantité + Prix + Dates --}}
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-
                             <div>
                                 <label class="text-xs text-muted-foreground mb-1 block">Quantité</label>
                                 <input type="number"
@@ -109,7 +107,6 @@
                                     class="input text-sm"
                                     min="1">
                             </div>
-
                             <div>
                                 <label class="text-xs text-muted-foreground mb-1 block">Prix achat (DA)</label>
                                 <input type="number"
@@ -118,7 +115,6 @@
                                     class="input text-sm"
                                     step="0.01" min="0">
                             </div>
-
                             <div>
                                 <label class="text-xs text-muted-foreground mb-1 block">Date fabrication</label>
                                 <input type="date"
@@ -126,7 +122,6 @@
                                     x-model="ligne.date_fabrication"
                                     class="input text-sm">
                             </div>
-
                             <div>
                                 <label class="text-xs text-muted-foreground mb-1 block">Date expiration</label>
                                 <input type="date"
@@ -134,10 +129,9 @@
                                     x-model="ligne.date_expiration"
                                     class="input text-sm">
                             </div>
-
                         </div>
 
-                        <div class="mt-2 text-right text-sm text-muted-foreground">
+                        <div class="mt-3 text-right text-sm text-muted-foreground">
                             Sous-total :
                             <span class="font-medium text-foreground"
                                 x-text="(ligne.quantite * ligne.prix_achat).toFixed(2) + ' DA'">
@@ -149,9 +143,9 @@
             </div>
         </div>
 
-        <div class="flex gap-3">
-            <button type="submit" class="btn">Créer l'approvisionnement</button>
-            <a href="{{ route('approvisionnements.index') }}" class="btn btn-outlined">Annuler</a>
+        <div class="flex flex-col sm:flex-row gap-3">
+            <button type="submit" class="btn w-full sm:w-auto">Créer l'approvisionnement</button>
+            <a href="{{ route('approvisionnements.index') }}" class="btn btn-outlined w-full sm:w-auto text-center">Annuler</a>
         </div>
 
     </form>

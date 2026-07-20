@@ -1,10 +1,10 @@
 <x-layout.admin title="Nouvelle vente">
 
     <div class="flex items-center gap-3 mb-6">
-        <a href="{{ route('ventes.index') }}" class="text-muted-foreground hover:text-foreground transition">
+        <a href="{{ route('ventes.index') }}" class="text-muted-foreground hover:text-foreground transition text-sm">
             ← Retour
         </a>
-        <h1 class="text-2xl font-bold">Nouvelle vente</h1>
+        <h1 class="text-xl md:text-2xl font-bold">Nouvelle vente</h1>
     </div>
 
     @if($errors->has('error'))
@@ -48,7 +48,7 @@
             {{-- TOTAL --}}
             <div class="bg-card border border-border rounded-lg p-4 flex flex-col justify-between">
                 <h2 class="font-semibold mb-2">Total</h2>
-                <p class="text-3xl font-bold text-primary" x-text="total + ' DA'"></p>
+                <p class="text-2xl md:text-3xl font-bold text-primary" x-text="total + ' DA'"></p>
             </div>
 
         </div>
@@ -62,12 +62,20 @@
                 </button>
             </div>
 
-            <div class="space-y-3">
+            <div class="space-y-4">
                 <template x-for="(ligne, index) in lignes" :key="index">
-                    <div class="grid grid-cols-12 gap-3 items-end">
+                    <div class="border border-border rounded-lg p-3 relative">
+
+                        {{-- Bouton supprimer --}}
+                        <button type="button"
+                            @click="supprimerLigne(index)"
+                            x-show="lignes.length > 1"
+                            class="absolute top-2 right-2 text-red-400 hover:text-red-300 transition text-lg">
+                            ✕
+                        </button>
 
                         {{-- Produit --}}
-                        <div class="col-span-5">
+                        <div class="mb-3">
                             <label class="text-xs text-muted-foreground mb-1 block">Produit</label>
                             <select :name="'lignes[' + index + '][produit_id]'"
                                 x-model="ligne.produit_id"
@@ -83,42 +91,36 @@
                             </select>
                         </div>
 
-                        {{-- Quantité --}}
-                        <div class="col-span-2">
-                            <label class="text-xs text-muted-foreground mb-1 block">Quantité</label>
-                            <input type="number"
-                                :name="'lignes[' + index + '][quantite]'"
-                                x-model="ligne.quantite"
-                                class="input text-sm"
-                                min="1">
-                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
 
-                        {{-- Prix unitaire --}}
-                        <div class="col-span-3">
-                            <label class="text-xs text-muted-foreground mb-1 block">Prix unitaire (DA)</label>
-                            <input type="number"
-                                :name="'lignes[' + index + '][prix_unitaire]'"
-                                x-model="ligne.prix_unitaire"
-                                class="input text-sm"
-                                step="0.01" min="0">
-                        </div>
+                            {{-- Quantité --}}
+                            <div>
+                                <label class="text-xs text-muted-foreground mb-1 block">Quantité</label>
+                                <input type="number"
+                                    :name="'lignes[' + index + '][quantite]'"
+                                    x-model="ligne.quantite"
+                                    class="input text-sm"
+                                    min="1">
+                            </div>
 
-                        {{-- Sous-total --}}
-                        <div class="col-span-1">
-                            <label class="text-xs text-muted-foreground mb-1 block">S/Total</label>
-                            <p class="text-sm font-medium pt-3"
-                                x-text="(ligne.quantite * ligne.prix_unitaire).toFixed(2)">
-                            </p>
-                        </div>
+                            {{-- Prix unitaire --}}
+                            <div>
+                                <label class="text-xs text-muted-foreground mb-1 block">Prix unitaire (DA)</label>
+                                <input type="number"
+                                    :name="'lignes[' + index + '][prix_unitaire]'"
+                                    x-model="ligne.prix_unitaire"
+                                    class="input text-sm"
+                                    step="0.01" min="0">
+                            </div>
 
-                        {{-- Supprimer --}}
-                        <div class="col-span-1">
-                            <button type="button"
-                                @click="supprimerLigne(index)"
-                                x-show="lignes.length > 1"
-                                class="text-red-400 hover:text-red-300 transition text-lg">
-                                ✕
-                            </button>
+                            {{-- Sous-total --}}
+                            <div class="col-span-2 sm:col-span-1">
+                                <label class="text-xs text-muted-foreground mb-1 block">Sous-total</label>
+                                <p class="text-sm font-medium pt-3 text-primary"
+                                    x-text="(ligne.quantite * ligne.prix_unitaire).toFixed(2) + ' DA'">
+                                </p>
+                            </div>
+
                         </div>
 
                     </div>
@@ -126,9 +128,9 @@
             </div>
         </div>
 
-        <div class="flex gap-3">
-            <button type="submit" class="btn">Valider la vente</button>
-            <a href="{{ route('ventes.index') }}" class="btn btn-outlined">Annuler</a>
+        <div class="flex flex-col sm:flex-row gap-3">
+            <button type="submit" class="btn w-full sm:w-auto">Valider la vente</button>
+            <a href="{{ route('ventes.index') }}" class="btn btn-outlined w-full sm:w-auto text-center">Annuler</a>
         </div>
 
     </form>

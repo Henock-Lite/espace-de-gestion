@@ -1,13 +1,13 @@
 <x-layout.admin title="Nouveau fournisseur">
 
     <div class="flex items-center gap-3 mb-6">
-        <a href="{{ route('fournisseurs.index') }}" class="text-muted-foreground hover:text-foreground transition">
+        <a href="{{ route('fournisseurs.index') }}" class="text-muted-foreground hover:text-foreground transition text-sm">
             ← Retour
         </a>
-        <h1 class="text-2xl font-bold">Nouveau fournisseur</h1>
+        <h1 class="text-xl md:text-2xl font-bold">Nouveau fournisseur</h1>
     </div>
 
-    <div class="bg-card border border-border rounded-lg p-6 max-w-xl mx-auto">
+    <div class="bg-card border border-border rounded-lg p-4 md:p-6 max-w-xl mx-auto">
 
         <form method="POST" action="{{ route('fournisseurs.store') }}">
             @csrf
@@ -21,7 +21,7 @@
                 @error('nom') <p class="error">{{ $message }}</p> @enderror
             </div>
 
-            <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <div>
                     <label for="telephone">Téléphone</label>
                     <input type="text" id="telephone" name="telephone"
@@ -62,9 +62,9 @@
                     placeholder="Notes sur le fournisseur...">{{ old('description') }}</textarea>
             </div>
 
-            <div class="flex gap-3">
-                <button type="submit" class="btn">Créer le fournisseur</button>
-                <a href="{{ route('fournisseurs.index') }}" class="btn btn-outlined">Annuler</a>
+            <div class="flex flex-col sm:flex-row gap-3">
+                <button type="submit" class="btn w-full sm:w-auto">Créer le fournisseur</button>
+                <a href="{{ route('fournisseurs.index') }}" class="btn btn-outlined w-full sm:w-auto text-center">Annuler</a>
             </div>
 
         </form>

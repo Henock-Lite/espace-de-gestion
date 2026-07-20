@@ -1,13 +1,13 @@
 <x-layout.admin title="Nouvelle catégorie">
 
     <div class="flex items-center gap-3 mb-6">
-        <a href="{{ route('categories.index') }}" class="text-muted-foreground hover:text-foreground transition">
+        <a href="{{ route('categories.index') }}" class="text-muted-foreground hover:text-foreground transition text-sm">
             ← Retour
         </a>
-        <h1 class="text-2xl font-bold">Nouvelle catégorie</h1>
+        <h1 class="text-xl md:text-2xl font-bold">Nouvelle catégorie</h1>
     </div>
 
-    <div class="bg-card border border-border rounded-lg p-6 max-w-lg  mx-auto">
+    <div class="bg-card border border-border rounded-lg p-4 md:p-6 max-w-lg mx-auto">
 
         <form method="POST" action="{{ route('categories.store') }}">
             @csrf
@@ -33,9 +33,9 @@
                 @enderror
             </div>
 
-            <div class="flex gap-3">
-                <button type="submit" class="btn">Créer la catégorie</button>
-                <a href="{{ route('categories.index') }}" class="btn btn-outlined">Annuler</a>
+            <div class="flex flex-col sm:flex-row gap-3">
+                <button type="submit" class="btn w-full sm:w-auto">Créer la catégorie</button>
+                <a href="{{ route('categories.index') }}" class="btn btn-outlined w-full sm:w-auto text-center">Annuler</a>
             </div>
 
         </form>

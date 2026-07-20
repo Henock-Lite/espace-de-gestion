@@ -1,10 +1,10 @@
 <x-layout.admin title="Détail approvisionnement">
 
-    <div class="flex items-center gap-3 mb-6">
-        <a href="{{ route('approvisionnements.index') }}" class="text-muted-foreground hover:text-foreground transition">
+    <div class="flex flex-wrap items-center gap-3 mb-6">
+        <a href="{{ route('approvisionnements.index') }}" class="text-muted-foreground hover:text-foreground transition text-sm">
             ← Retour
         </a>
-        <h1 class="text-2xl font-bold">Bon — {{ $appro->numero_bon }}</h1>
+        <h1 class="text-xl md:text-2xl font-bold">Bon — {{ $appro->numero_bon }}</h1>
         @if($appro->statut === 'reçu')
             <span class="px-2 py-1 bg-green-500/10 text-green-400 rounded text-xs">Reçu</span>
         @elseif($appro->statut === 'annulé')
@@ -15,7 +15,7 @@
     </div>
 
     {{-- INFOS --}}
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
 
         <div class="bg-card border border-border p-4 rounded-lg">
             <p class="text-muted-foreground text-sm mb-1">Fournisseur</p>
@@ -33,7 +33,7 @@
             </p>
         </div>
 
-        <div class="bg-card border border-border p-4 rounded-lg">
+        <div class="bg-card border border-border p-4 rounded-lg sm:col-span-2 md:col-span-1">
             <p class="text-muted-foreground text-sm mb-1">Montant total</p>
             <p class="text-2xl font-bold text-primary">
                 {{ number_format($appro->montant_total, 2, ',', ' ') }} DA
@@ -47,43 +47,55 @@
         <div class="px-4 py-3 border-b border-border">
             <h2 class="font-semibold">Produits commandés</h2>
         </div>
-        <table class="w-full text-sm">
-            <thead class="border-b border-border">
-                <tr class="text-muted-foreground">
-                    <th class="text-left px-4 py-3">Produit</th>
-                    <th class="text-left px-4 py-3">N° Lot</th>
-                    <th class="text-left px-4 py-3">Quantité</th>
-                    <th class="text-left px-4 py-3">Prix achat</th>
-                    <th class="text-left px-4 py-3">Sous-total</th>
-                    <th class="text-left px-4 py-3">Expiration</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-border">
-                @foreach($appro->lignes as $ligne)
-                    <tr>
-                        <td class="px-4 py-3 font-medium">{{ $ligne->produit->nom }}</td>
-                        <td class="px-4 py-3 text-muted-foreground">
-                            {{ $ligne->lot?->numero_lot ?? '—' }}
-                        </td>
-                        <td class="px-4 py-3">{{ $ligne->quantite }}</td>
-                        <td class="px-4 py-3">{{ number_format($ligne->prix_achat, 2, ',', ' ') }} DA</td>
-                        <td class="px-4 py-3 font-medium">{{ number_format($ligne->sous_total, 2, ',', ' ') }} DA</td>
-                        <td class="px-4 py-3 text-muted-foreground">
-                            {{ $ligne->lot?->date_expiration?->format('d/m/Y') ?? '—' }}
-                        </td>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm min-w-[500px]">
+                <thead class="border-b border-border">
+                    <tr class="text-muted-foreground">
+                        <th class="text-left px-4 py-3">Produit</th>
+                        <th class="text-left px-4 py-3 hidden sm:table-cell">N° Lot</th>
+                        <th class="text-left px-4 py-3">Qté</th>
+                        <th class="text-left px-4 py-3 hidden sm:table-cell">Prix achat</th>
+                        <th class="text-left px-4 py-3">Sous-total</th>
+                        <th class="text-left px-4 py-3 hidden md:table-cell">Expiration</th>
                     </tr>
-                @endforeach
-            </tbody>
-            <tfoot class="border-t border-border">
-                <tr>
-                    <td colspan="4" class="px-4 py-3 text-right font-semibold">Total</td>
-                    <td class="px-4 py-3 font-bold text-primary">
-                        {{ number_format($appro->montant_total, 2, ',', ' ') }} DA
-                    </td>
-                    <td></td>
-                </tr>
-            </tfoot>
-        </table>
+                </thead>
+                <tbody class="divide-y divide-border">
+                    @foreach($appro->lignes as $ligne)
+                        <tr>
+                            <td class="px-4 py-3 font-medium">
+                                {{ $ligne->produit->nom }}
+                                <div class="text-xs text-muted-foreground sm:hidden">
+                                    {{ $ligne->lot?->numero_lot ?? '—' }}
+                                </div>
+                            </td>
+                            <td class="px-4 py-3 text-muted-foreground hidden sm:table-cell">
+                                {{ $ligne->lot?->numero_lot ?? '—' }}
+                            </td>
+                            <td class="px-4 py-3">{{ $ligne->quantite }}</td>
+                            <td class="px-4 py-3 hidden sm:table-cell">
+                                {{ number_format($ligne->prix_achat, 2, ',', ' ') }} DA
+                            </td>
+                            <td class="px-4 py-3 font-medium">
+                                {{ number_format($ligne->sous_total, 2, ',', ' ') }} DA
+                            </td>
+                            <td class="px-4 py-3 text-muted-foreground hidden md:table-cell">
+                                {{ $ligne->lot?->date_expiration?->format('d/m/Y') ?? '—' }}
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+                <tfoot class="border-t border-border">
+                    <tr>
+                        <td colspan="2" class="px-4 py-3 text-right font-semibold sm:hidden">Total</td>
+                        <td colspan="4" class="px-4 py-3 text-right font-semibold hidden sm:table-cell">Total</td>
+                        <td class="px-4 py-3 font-bold text-primary">
+                            {{ number_format($appro->montant_total, 2, ',', ' ') }} DA
+                        </td>
+                        <td class="hidden md:table-cell"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
     </div>
 
     {{-- VALIDER --}}
@@ -102,7 +114,7 @@
                 @foreach($appro->lignes as $ligne)
                     <div class="border border-border rounded-lg p-4 mb-3">
                         <p class="font-medium mb-3">{{ $ligne->produit->nom }}</p>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                             <div>
                                 <label class="text-xs text-muted-foreground mb-1 block">N° Lot</label>
                                 <input type="text"
@@ -127,7 +139,7 @@
                     </div>
                 @endforeach
 
-                <button type="submit" class="btn">Confirmer la réception</button>
+                <button type="submit" class="btn w-full sm:w-auto">Confirmer la réception</button>
             </form>
         </div>
     @endif
